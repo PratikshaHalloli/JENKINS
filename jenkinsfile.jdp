@@ -11,7 +11,8 @@ pipeline {
 
         stage ('BUILD JOB') {
             steps{
-                echo 'BUILD SUCCESS'
+                sh '''cd backend'''
+                sh '''mvn clean package -DskipTests'''
             }
         }
 
