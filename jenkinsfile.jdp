@@ -30,7 +30,24 @@ pipeline {
             }
         }
 
-        
+
+        stage ('TEST') {
+            steps { 
+              withSonarQubeEnv(installationName: 'sonarqube' , credentialsId: 'ssh-cred') {
+                sh '''cd backend
+                  mvn sonar:sonar -Dsonar.projectKey=studentapp'''
+                }
+  }
+}
+
+
+
+
+
+
+
+
+
         stage ('DEPLOY JOB') {
             steps{
                 echo 'DEPLOY SUCCESS'
