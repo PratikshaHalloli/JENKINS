@@ -9,12 +9,14 @@ pipeline {
             }
         }
 
-        stage ('BUILD JOB') {
-            steps{
-                sh '''cd backend'''
-                sh '''mvn clean package -DskipTests'''
-            }
-        }
+        stage('BUILD JOB') {
+    steps {
+        sh '''
+            cd backend
+            mvn clean package -DskipTests
+        '''
+    }
+}
 
         
         stage ('TEST JOB') {
