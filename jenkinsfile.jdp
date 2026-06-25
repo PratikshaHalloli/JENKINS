@@ -35,7 +35,7 @@ pipeline {
             steps { 
               withSonarQubeEnv(installationName: 'sonarqube' , credentialsId: 'ssh-cred') {
                 sh '''cd backend
-                  mvn sonar:sonar -Dsonar.projectKey=studentapp'''
+                  mvn sonar:sonar -Dsonar.projectKey=project'''
                 }
   }
 }
