@@ -26,6 +26,9 @@ pipeline {
                     sh '''cd backend
                   mvn sonar:sonar -Dsonar.projectKey=project'''
                     }
+  }
+}
+
 
 stage ('Quality-Gate') {
             steps {
