@@ -1,59 +1,46 @@
-
-
 pipeline {
     agent any
+
     stages {
-        stage ('PULL JOB') {
-            steps{
+
+        stage('PULL JOB') {
+            steps {
                 git branch: 'main', url: 'https://github.com/jambhulkarcloudblitz-alt/CDEC-studentapp.git'
             }
         }
 
         stage('BUILD JOB') {
-    steps {
-        sh '''
-            cd backend
-            mvn clean package -DskipTests
-        '''
-    }
-}
-
-        
-         stage ('Test') {
             steps {
-                withSonarQubeEnv(installationName: 'sonarqube',credentialsId: 'sona-cred') {
-
-                    sh '''cd backend
-                  mvn sonar:sonar -Dsonar.projectKey=project'''
-                    }
-  }
-}
-
-
-stage ('Quality-Gate') {
-            steps {
-                timeout(10) {
-                      waitForQualityGate abortPipeline: true, credentialsId: 'sona-cred'  
-                    }
-                
+                sh '''
+                    cd backend
+                    mvn clean package -DskipTests
+                '''
             }
         }
-        
-       
 
+        stage('Test') {
+            steps {
+                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sona-cred') {
+                    sh '''
+                        cd backend
+                        mvn sonar:sonar -Dsonar.projectKey=project
+                    '''
+                }
+            }
+        }
 
+        stage('Quality-Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true, credentialsId: 'sona-cred'
+                }
+            }
+        }
 
-
-
-
-
-
-
-        stage ('DEPLOY JOB') {
-            steps{
+        stage('DEPLOY JOB') {
+            steps {
                 echo 'DEPLOY SUCCESS'
             }
         }
     }
-
 }
